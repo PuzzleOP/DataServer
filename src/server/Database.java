@@ -31,6 +31,19 @@ public class Database
 		return null;	
 	}
 	
+	public static void createTableChartacters() throws Exception
+	{
+		try
+		{
+			Connection connection=getConnection();
+			PreparedStatement createCharacters =connection.prepareStatement("CREATE TABLE IF NOT EXISTS characters (id int NOT NULL AUTO INCREMENT,)");
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	public static void createTableAccounts() throws Exception
 	{
 		try
@@ -38,6 +51,7 @@ public class Database
 			Connection connection = getConnection();
 			PreparedStatement createAccounts = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts(id int NOT NULL AUTO_INCREMENT, username varchar(255), password varchar(255), age int, security varchar(255) , PRIMARY KEY(id))");
 			createAccounts.executeUpdate();
+			
 		}
 		catch(Exception e)
 		{
