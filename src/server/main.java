@@ -7,6 +7,6 @@ public class main
 		Database db = new Database();
 		//db.getConnection();
 		db.InitDb();
-		db.printArray(db.getAccount("test"));
+		//db.printArray(db.getAccount("test"));
 	}
 }
