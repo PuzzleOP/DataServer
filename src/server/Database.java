@@ -107,26 +107,42 @@ public class Database
 			System.out.println("Insert account into table has been completed!");
 		}
 	}
+		
+	public static ArrayList<String> getCharacter(int id) throws Exception
+	{
+		try 
+		{
+			Connection connection = getConnection();
+			PreparedStatement getCharacterStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id ='" + id +"'");
+			
+			ResultSet result=getCharacterStatement.executeQuery();
+			ArrayList<String> array=new ArrayList<String>();
+			while(result.next())
+			{
+				array.add(result.getString("name"));
+				array.add(result.getstring("gender"));
+				array.add(result.getString("money"));
+				array.add(result.getString("level"));
+				array.add(result.getString("exp"));
+				array.add(result.getString("class"));
+				
+			}
+			return array;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return null;
+		
+	}
 	
-//public static ArrayList<String> getCharacter(int id) throws Exception
-//{
-//	try 
-//	{
-//		Connection connection = getConnection();
-//		//PreparedStatement get
-//	}
-//	catch(Exception e)
-//	{
-//		System.out.println(e);
-//	}
-//}
-//
-	public static ArrayList<String> getAccount(int id) throws Exception
+	public static ArrayList<String> getAccount(String username) throws Exception
 	{
 		try
 		{
 			Connection connection = getConnection();
-			PreparedStatement getAccountStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = '" + id + "'");
+			PreparedStatement getAccountStatement = connection.prepareStatement("SELECT * FROM accounts WHERE username = '" + username + "'");
 			
 			ResultSet result = getAccountStatement.executeQuery();
 			ArrayList<String> array = new ArrayList<String>();
