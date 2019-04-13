@@ -55,7 +55,7 @@ public class Database
 		try
 		{
 			Connection connection = getConnection();
-			PreparedStatement createAccounts = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts(id int NOT NULL AUTO_INCREMENT, username varchar(255), password varchar(255), age int, security varchar(255) , PRIMARY KEY(id))");
+			PreparedStatement createAccounts = connection.prepareStatement("CREATE TABLE IF NOT EXISTS accounts(id int NOT NULL AUTO_INCREMENT, username varchar(255), password varchar(255), age int, security varchar(255), hasCharacter int, PRIMARY KEY(id))");
 			createAccounts.executeUpdate();
 		}
 		
@@ -88,13 +88,13 @@ public class Database
 		
 	}
 	
-	public static void insertAccount(String username, String password, int age, String security) throws Exception
+	public static void insertAccount(String username, String password, int age, String security, int hasCharacter) throws Exception
 	{
 		try
 		{
 			Connection connection = getConnection();
 			
-			PreparedStatement insertAccountStatement = connection.prepareStatement("INSERT INTO accounts(username, password, age, security) VALUES ('" + username + "', '" + password + "', '" + age + "', '" + security + "')");
+			PreparedStatement insertAccountStatement = connection.prepareStatement("INSERT INTO accounts(username, password, age, security, hasCharacter) VALUES ('" + username + "', '" + password + "', '" + age + "', '" + security + "','" + hasCharacter + "')");
 			insertAccountStatement.executeUpdate();
 			insertCharacter("empty","empty",0,0,0,"empty");
 		}
@@ -120,7 +120,7 @@ public class Database
 			while(result.next())
 			{
 				array.add(result.getString("name"));
-				array.add(result.getstring("gender"));
+				array.add(result.getString("gender"));
 				array.add(result.getString("money"));
 				array.add(result.getString("level"));
 				array.add(result.getString("exp"));
@@ -152,6 +152,7 @@ public class Database
 				array.add(result.getString("password"));
 				array.add(result.getString("age"));
 				array.add(result.getString("security"));
+				array.add(result.getString("hasCharacter"));
 			}
 			return array;
 		}

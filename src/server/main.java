@@ -2,11 +2,13 @@ package server;
 
 public class main 
 {
+	static MainMenu menu = new MainMenu();
+	static Database db = new Database();
+	
 	public static void main(String[] args) throws Exception
 	{
-		Database db = new Database();
-		//db.getConnection();
+		db.getConnection();
 		db.InitDb();
-		//db.printArray(db.getAccount("test"));
+		menu.main(args);
 	}
 }
