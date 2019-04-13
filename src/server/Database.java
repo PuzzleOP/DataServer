@@ -167,6 +167,7 @@ public class Database
     	for(int i = 0; i < array.size(); i++)
     	{
     		System.out.println(array.get(i));
+    		//print
     	}
     }
 	
