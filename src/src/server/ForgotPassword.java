@@ -126,28 +126,37 @@ public class ForgotPassword {
 					username = txtUsername.getText();
 					password = txtPassword.getText();
 					security= txtSecurity.getText();
-					try
-					{
-						username=txtUsername.getText();
-						static Database db=new Database();
-						
-						if(username.equals(dt.getAccount(username)))
-						{
-							
-						}
-						else
-						{
-							JOptionPane.showMessageDialog(dialog, "Username taken!");
-						}
-					}
-					catch(Exception e)
-					{
-						System.out.println(e);
-					}
 					
+				}
+				try
+				{
+					if(checkCorrect(username) == true && checkCorrect(password) == true)
+					{
+						
+						System.out.println("wrong username or password");
+					}
 				}
 			}
 		});
+	    boolean checkCorrect(String username,String password) throws Exception
+		{
+			boolean taken = true;
+			try
+			{
+				ArrayList<String> user = db.getAccount(username);
+				ArrayList<String> pass=db.getAccount(password);
+				if(user.get(0).equals(username) && user.get(1).equals(password))
+				{
+	               taken=false;
+				}
+				return taken;
+			}
+			catch(Exception e)
+			{
+				System.out.println(e);
+			}
+			return taken;		
+		}
 
 	}
 	
