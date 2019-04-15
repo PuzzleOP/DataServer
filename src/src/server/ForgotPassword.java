@@ -65,9 +65,9 @@ public class ForgotPassword {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(90, 260, 89, 23);
-		frame.getContentPane().add(btnLogin);
+		JButton btnForgot = new JButton("Forgot Password");
+		btnForgot.setBounds(90, 260, 89, 23);
+		frame.getContentPane().add(btnForgot);
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(90, 291, 89, 23);
@@ -114,7 +114,7 @@ public class ForgotPassword {
 			}
 		});
 	    
-	    btnLogin.addActionListener(new ActionListener() 
+	    btnForgot.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
@@ -132,12 +132,20 @@ public class ForgotPassword {
 						{
 							
 								JOptionPane.showMessageDialog(dialog,"You have logged in!");
+								menu.frame.setVisible(true);
+								frame.dispose();
 							
 						}
-						else
+						else if(checkCorrect(password) == false)
+						{	
+							if(checkSecurity(security) == true)
+							{
+							JOptionPane.showMessageDialog(dialog, "Wrong password entered and wrong Answer");
+							}
+						}
+						else if(checkSecurity(security) == true)
 						{
-							JOptionPane.showMessageDialog(dialog, "Wrong password");
-							
+							JOptionPane.showMessageDialog(dialog,"The answer is correct.You have logged in!");
 						}
 					}
 					catch(Exception e)
@@ -152,13 +160,13 @@ public class ForgotPassword {
 	}
 	boolean checkCorrect(String password) throws Exception
 	{
-		boolean correct = true;
+		boolean correct = false;
 		try
 		{
 			ArrayList<String> pass = db.getAccount(password);
 			if(pass.get(1).equals(password))
 			{
-				correct = false;
+				correct = true;
 			}
 			return correct;
 		}
@@ -167,6 +175,25 @@ public class ForgotPassword {
 			System.out.println(e);
 		}
 		return correct;		
+	}
+	
+	boolean checkSecurity(String security) throws Exception 
+	{
+		boolean same=false;
+		try
+		{
+			ArrayList<String> secu=db.getAccount(security);
+			if(secu.get(3).equals(security))
+			{
+				same=true;
+			}
+			return same;
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		return same;
 	}
 
 }

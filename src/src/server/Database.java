@@ -150,12 +150,12 @@ public class Database
 		}
 	}
 	
-	public static ArrayList<String> getExperience(int level) throws Exception
+	public static ArrayList<String> getExperience(int exp) throws Exception
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE level='" + level + "'");
+			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE exp='" + exp + "'");
 			
 			ResultSet result=getExperienceStatement.executeQuery();
 			ArrayList<String> array=new ArrayList<String>();
