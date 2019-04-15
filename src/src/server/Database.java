@@ -110,13 +110,14 @@ public class Database
 		}
 	}
 
-	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas) throws Exception 
+	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas,int hasexp) throws Exception 
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,class) VALUES ('"+ name +"' ,'"+ gender +"' ,'"+ money +"' ,'" + level +"','"+ exp +"','"+ clas + "')");
+			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,class,hasexp) VALUES ('"+ name +"' ,'"+ gender +"' ,'"+ money +"' ,'" + level +"','"+ exp +"','"+ clas + "','" + hasexp + "')");
 		    characters.executeUpdate();
+		    insertExperience(0,0);
 		}
 		catch(Exception e)
 		{
@@ -137,7 +138,7 @@ public class Database
 			
 			PreparedStatement insertAccountStatement = connection.prepareStatement("INSERT INTO accounts(username, password, age, security, hasCharacter) VALUES ('" + username + "', '" + password + "', '" + age + "', '" + security + "','" + hasCharacter + "')");
 			insertAccountStatement.executeUpdate();
-			insertCharacter("empty","empty",0,0,0,"empty");
+			insertCharacter("empty","empty",0,0,0,"empty",0);
 		}
 		catch(Exception e)
 		{
