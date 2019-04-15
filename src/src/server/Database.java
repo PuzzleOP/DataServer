@@ -150,12 +150,12 @@ public class Database
 		}
 	}
 	
-	public static ArrayList<String> getExperience(int id) throws Exception
+	public static ArrayList<String> getExperience(int level) throws Exception
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE id='" + id + "'");
+			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE level='" + level + "'");
 			
 			ResultSet result=getExperienceStatement.executeQuery();
 			ArrayList<String> array=new ArrayList<String>();
@@ -193,6 +193,7 @@ public class Database
 				array.add(result.getString("level"));
 				array.add(result.getString("exp"));
 				array.add(result.getString("class"));
+				array.add(result.getString("hasexp"));
 				
 			}
 			return array;

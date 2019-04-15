@@ -2,6 +2,7 @@ package server;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -17,20 +18,20 @@ public class ForgotPassword {
 
 	private JFrame frame;
 	private JFrame dialog;
-	
+
 	private JTextField txtUsername;
 	private JTextField txtPassword;
 	private JTextField txtSecurity;
 	boolean valid = false;
 
-	
+
 	private String username;
 	private String password;
 	private String security;
-	
+
 	static Database db=new Database();
 	static MainMenu menu=new MainMenu();
-	
+
 
 	/**
 	 * Launch the application.
@@ -125,40 +126,53 @@ public class ForgotPassword {
 				{
 					username = txtUsername.getText();
 					password = txtPassword.getText();
-					security= txtSecurity.getText();
-					
-				}
-				try
-				{
-					if(checkCorrect(username) == true && checkCorrect(password) == true)
+					try
 					{
-						
-						System.out.println("wrong username or password");
+						if(checkCorrect(password) == true)
+						{
+							
+								JOptionPane.showMessageDialog(dialog,"You have logged in!");
+							
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(dialog, "Wrong password");
+							
+						}
 					}
+					catch(Exception e)
+					{
+						System.out.println(e);
+					}
+					
 				}
 			}
 		});
-	    boolean checkCorrect(String username,String password) throws Exception
+	    
+	}
+	boolean checkCorrect(String password) throws Exception
+	{
+		boolean correct = true;
+		try
 		{
-			boolean taken = true;
-			try
+			ArrayList<String> pass = db.getAccount(password);
+			if(pass.get(1).equals(password))
 			{
-				ArrayList<String> user = db.getAccount(username);
-				ArrayList<String> pass=db.getAccount(password);
-				if(user.get(0).equals(username) && user.get(1).equals(password))
-				{
-	               taken=false;
-				}
-				return taken;
+				correct = false;
 			}
-			catch(Exception e)
-			{
-				System.out.println(e);
-			}
-			return taken;		
+			return correct;
 		}
-
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return correct;		
 	}
+
+}
+
+	    
+		
+		
 	
-	}
-
+	
