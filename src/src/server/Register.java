@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
-
 public class Register 
 {
 

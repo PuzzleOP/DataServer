@@ -1,5 +1,6 @@
 package server;
 
+
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,6 +32,26 @@ public class Database
 		return null;	
 	}
 	
+	public static void createTableExperience() throws Exception
+	{
+		try
+		{
+			Connection connection=getConnection();
+			PreparedStatement createExperience=connection.prepareStatement("CREATE TABLE IF NOT EXISTS experience(id int NOT NULL AUTO_INCREMENT,level int,exp int,PRIMARY KEY(id))");
+			createExperience.executeUpdate();
+		}
+		
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally
+		{
+			System.out.println("The table is created");
+		}
+	}
+	
+
 	public static void createTableCharacters() throws Exception
 	{
 		try
@@ -46,7 +67,7 @@ public class Database
 		}
 		finally
 		{
-			System.out.println("yaayyyy se napravi karakterot");
+			System.out.println("get the character");
 		}
 	}
 	
@@ -69,6 +90,26 @@ public class Database
 		}
 	}
 	
+	public static void insertExperience(int level,int exp) throws Exception
+	{
+		try
+		{
+			Connection connection=getConnection();
+			PreparedStatement experience=connection.prepareStatement("INSERT INTO experience(level,exp)VALUES ('"+ level  +"','" + exp +"')");
+			experience.executeUpdate();
+		}
+		
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+		finally 
+		{
+			System.out.println("inserted experience");
+		}
+	}
+
 	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas) throws Exception 
 	{
 		try
@@ -83,7 +124,7 @@ public class Database
 		}
 		finally
 		{
-			System.out.println("se dodade karakterot");
+			System.out.println("the character is added");
 		}
 		
 	}
@@ -106,6 +147,32 @@ public class Database
 		{
 			System.out.println("Insert account into table has been completed!");
 		}
+	}
+	
+	public static ArrayList<String> getExperience(int id) throws Exception
+	{
+		try
+		{
+			Connection connection=getConnection();
+			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE id='" + id + "'");
+			
+			ResultSet result=getExperienceStatement.executeQuery();
+			ArrayList<String> array=new ArrayList<String>();
+			while(result.next())
+			{
+				array.add(result.getString("level"));
+				array.add(result.getString("exp"));
+			}
+			return array;
+		}
+		
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		
+	 return null;	
+		
 	}
 		
 	public static ArrayList<String> getCharacter(int id) throws Exception
@@ -176,6 +243,6 @@ public class Database
 	{
 		createTableAccounts();
 		createTableCharacters();
-		
+		createTableExperience();
 	}
 }

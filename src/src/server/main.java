@@ -3,12 +3,12 @@ package server;
 public class main 
 {
 	static MainMenu menu = new MainMenu();
-	static Database db = new Database();
+	static Database dt = new Database();
 	
 	public static void main(String[] args) throws Exception
 	{
-		db.getConnection();
-		db.InitDb();
+		dt.getConnection();
+		dt.InitDb();
 		menu.main(args);
 	}
 }
