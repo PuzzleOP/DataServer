@@ -1,6 +1,5 @@
 package server;
 
-
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +8,8 @@ import java.sql.ResultSet;
 
 public class Database 
 {
-	
+	//for pushing
+	static FillOutLevelExp fe = new FillOutLevelExp();
 	public static Connection getConnection() throws Exception
 	{
 		try
@@ -36,9 +36,16 @@ public class Database
 	{
 		try
 		{
+			
 			Connection connection=getConnection();
 			PreparedStatement createExperience=connection.prepareStatement("CREATE TABLE IF NOT EXISTS experience(id int NOT NULL AUTO_INCREMENT,level int,exp int,PRIMARY KEY(id))");
 			createExperience.executeUpdate();
+			PreparedStatement isExpEmpty = connection.prepareStatement("SELECT * FROM experience");
+			ResultSet result= isExpEmpty.executeQuery();
+			if(!result.first())
+			{
+				insertExperience();
+			}
 		}
 		
 		catch (Exception e)
@@ -90,13 +97,22 @@ public class Database
 		}
 	}
 	
-	public static void insertExperience(int level,int exp) throws Exception
+	public static void insertExperience() throws Exception
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement experience=connection.prepareStatement("INSERT INTO experience(level,exp)VALUES ('"+ level  +"','" + exp +"')");
-			experience.executeUpdate();
+			
+			
+			
+			int Experience[] = fe.experiencefe();
+			int Lvl[] = fe.levelsfe();
+			
+			for(int i = 0; i < 100; i++)
+			{
+				PreparedStatement experience = connection.prepareStatement("INSERT INTO experience(level,exp)VALUES ('"+ Lvl[i] + "','" + Experience[i] +"')");
+				experience.executeUpdate();
+			}
 		}
 		
 		catch(Exception e)
@@ -106,18 +122,17 @@ public class Database
 		
 		finally 
 		{
-			System.out.println("inserted experience");
+			System.out.println("Added all levels into the database");
 		}
 	}
 
-	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas,int hasexp) throws Exception 
+	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas) throws Exception 
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,class,hasexp) VALUES ('"+ name +"' ,'"+ gender +"' ,'"+ money +"' ,'" + level +"','"+ exp +"','"+ clas + "','" + hasexp + "')");
+			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,class) VALUES ('"+ name +"' ,'"+ gender +"' ,'"+ money +"' ,'" + level +"','"+ exp +"','"+ clas + "')");
 		    characters.executeUpdate();
-		    insertExperience(0,0);
 		}
 		catch(Exception e)
 		{
@@ -125,7 +140,7 @@ public class Database
 		}
 		finally
 		{
-			System.out.println("the character is added");
+			System.out.println("The character " + name + " is added");
 		}
 		
 	}
@@ -138,7 +153,7 @@ public class Database
 			
 			PreparedStatement insertAccountStatement = connection.prepareStatement("INSERT INTO accounts(username, password, age, security, hasCharacter) VALUES ('" + username + "', '" + password + "', '" + age + "', '" + security + "','" + hasCharacter + "')");
 			insertAccountStatement.executeUpdate();
-			insertCharacter("empty","empty",0,0,0,"empty",0);
+			insertCharacter("empty","empty",0,0,0,"empty");
 		}
 		catch(Exception e)
 		{
@@ -150,12 +165,12 @@ public class Database
 		}
 	}
 	
-	public static ArrayList<String> getExperience(int exp) throws Exception
+	public static ArrayList<String> getExperience(int level) throws Exception
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE exp='" + exp + "'");
+			PreparedStatement getExperienceStatement = connection.prepareStatement("SELECT * FROM experience WHERE level='" + level + "'");
 			
 			ResultSet result=getExperienceStatement.executeQuery();
 			ArrayList<String> array=new ArrayList<String>();
@@ -192,9 +207,7 @@ public class Database
 				array.add(result.getString("money"));
 				array.add(result.getString("level"));
 				array.add(result.getString("exp"));
-				array.add(result.getString("class"));
-				array.add(result.getString("hasexp"));
-				
+				array.add(result.getString("class"));				
 			}
 			return array;
 		}
@@ -247,4 +260,5 @@ public class Database
 		createTableCharacters();
 		createTableExperience();
 	}
+	
 }

@@ -88,6 +88,7 @@ public class ForgotPassword {
 		txtPassword.setBounds(157, 101, 106, 20);
 		frame.getContentPane().add(txtPassword);
 		
+		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblPassword.setBounds(10, 93, 89, 33);
@@ -126,6 +127,7 @@ public class ForgotPassword {
 				{
 					username = txtUsername.getText();
 					password = txtPassword.getText();
+					security=txtSecurity.getText();
 					try
 					{
 						if(checkCorrect(password) == true)
