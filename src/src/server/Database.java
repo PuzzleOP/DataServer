@@ -1,5 +1,4 @@
 package server;
-
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,6 +29,13 @@ public class Database
 		}
 		
 		return null;	
+	}
+	
+	public void LevelUp(int level, String name) throws Exception
+	{
+		Connection connection = getConnection();
+		PreparedStatement lvlup = connection.prepareStatement("update characters set level=" + level + " where name=" + name);
+		lvlup.executeUpdate();
 	}
 	
 	public static void createTableExperience() throws Exception
@@ -64,7 +70,7 @@ public class Database
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement createCharacters =connection.prepareStatement("CREATE TABLE IF NOT EXISTS characters(id int NOT NULL AUTO_INCREMENT,name varchar(255),gender varchar(10),money int,level int,exp int,class varchar(255),PRIMARY KEY(id))");
+			PreparedStatement createCharacters =connection.prepareStatement("CREATE TABLE IF NOT EXISTS characters(id int NOT NULL AUTO_INCREMENT,name varchar(255),gender varchar(10),money int,level int,exp int,health int, attack int, defense int, class varchar(255),PRIMARY KEY(id))");
 		    createCharacters.executeUpdate();
 		}
 		
@@ -126,12 +132,12 @@ public class Database
 		}
 	}
 
-	public static void insertCharacter(String name,String gender,int money,int level,int exp,String clas) throws Exception 
+	public static void insertCharacter(String name,String gender,int money,int level,int exp, int health, int attack, int defense, String clas) throws Exception 
 	{
 		try
 		{
 			Connection connection=getConnection();
-			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,class) VALUES ('"+ name +"' ,'"+ gender +"' ,'"+ money +"' ,'" + level +"','"+ exp +"','"+ clas + "')");
+			PreparedStatement characters=connection.prepareStatement("INSERT INTO characters(name,gender,money,level,exp,health,attack,defense,class) VALUES ('" + name + "' ,'" + gender + "' ,'" + money + "' ,'" + level + "','" + exp + "','" + health + "','" + attack + "','" + defense + "','" + clas + "')");
 		    characters.executeUpdate();
 		}
 		catch(Exception e)
@@ -153,7 +159,7 @@ public class Database
 			
 			PreparedStatement insertAccountStatement = connection.prepareStatement("INSERT INTO accounts(username, password, age, security, hasCharacter) VALUES ('" + username + "', '" + password + "', '" + age + "', '" + security + "','" + hasCharacter + "')");
 			insertAccountStatement.executeUpdate();
-			insertCharacter("empty","empty",0,0,0,"empty");
+			insertCharacter("empty","empty",0,0,0,0,0,0,"empty");
 		}
 		catch(Exception e)
 		{
@@ -207,6 +213,9 @@ public class Database
 				array.add(result.getString("money"));
 				array.add(result.getString("level"));
 				array.add(result.getString("exp"));
+				array.add(result.getString("health"));
+				array.add(result.getString("attack"));
+				array.add(result.getString("defense"));
 				array.add(result.getString("class"));				
 			}
 			return array;
@@ -260,5 +269,4 @@ public class Database
 		createTableCharacters();
 		createTableExperience();
 	}
-	
 }
